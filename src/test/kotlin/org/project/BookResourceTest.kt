@@ -5,9 +5,13 @@ import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import jakarta.ws.rs.core.MediaType
 import org.hamcrest.CoreMatchers.`is`
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class BookResourceTest {
 
     @Test
@@ -46,6 +50,7 @@ class BookResourceTest {
     }
 
     @Test
+    @Order(1)
     fun `should POST new book`() {
         val expected =
             """
