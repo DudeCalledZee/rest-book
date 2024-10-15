@@ -22,7 +22,6 @@ class BookResource {
     lateinit var logger: Logger
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     fun books() = bookRepository.getAllBooks()
 
     @GET

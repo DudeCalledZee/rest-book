@@ -1,6 +1,7 @@
 package org.project
 
 import com.google.common.net.HttpHeaders
+import groovy.json.JsonParser
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import jakarta.ws.rs.core.MediaType
@@ -44,5 +45,30 @@ class BookResourceTest {
             .statusCode(200)
             .body("size()", `is`(4))
     }
+
+    @Test
+    fun `should POST book`() {
+        val expected =
+            """
+            {
+            "id" : 6,
+            "yearOfPublication" : 1942,
+            "title": "The Great Gatsby",
+            "author": "F. Scott Fitzgerald"
+            }
+            """.trimIndent()
+
+        given()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(expected)
+            .`when`().post("api/books")
+            .then()
+            .statusCode(200)
+            .body("id", `is`(6))
+            .body("yearOfPublication", `is`(1942))
+            .body("title", `is`("The Great Gatsby"))
+            .body("author", `is`("F. Scott Fitzgerald"))
+    }
+
 
 }
