@@ -1,7 +1,6 @@
 package org.project
 
 import com.google.common.net.HttpHeaders
-import groovy.json.JsonParser
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import jakarta.ws.rs.core.MediaType
@@ -18,7 +17,7 @@ class BookResourceTest {
             .`when`().get("api/books/count")
             .then()
             .statusCode(200)
-            .body(`is`("4"))
+            .body(`is`("5"))
     }
 
     @Test
@@ -29,11 +28,11 @@ class BookResourceTest {
             .`when`().get("api/books/{id}")
             .then()
             .statusCode(200)
-            .body("title", `is`("The Hobbit"))
-            .body("author", `is`("<NAME>"))
-            .body("genre", `is`("Fantasy"))
-            .body("yearOfPublication", `is`(1937))
-            .body("id", `is`(1))
+            .body("title", `is`(listOf("The Hobbit")))
+            .body("author", `is`(listOf("<NAME>")))
+            .body("genre", `is`(listOf("Fantasy")))
+            .body("yearOfPublication", `is`(listOf(1937)))
+            .body("id", `is`(listOf(1)))
     }
 
     @Test
@@ -43,11 +42,11 @@ class BookResourceTest {
             .`when`().get("api/books")
             .then()
             .statusCode(200)
-            .body("size()", `is`(4))
+            .body("size()", `is`(5))
     }
 
     @Test
-    fun `should POST book`() {
+    fun `should POST new book`() {
         val expected =
             """
             {
@@ -69,6 +68,4 @@ class BookResourceTest {
             .body("title", `is`("The Great Gatsby"))
             .body("author", `is`("F. Scott Fitzgerald"))
     }
-
-
 }
