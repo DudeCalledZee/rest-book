@@ -1,12 +1,16 @@
 package org.project
 
 import jakarta.enterprise.context.ApplicationScoped
+import org.eclipse.microprofile.config.inject.ConfigProperty
 import java.util.Optional
 
 @ApplicationScoped
 class BookRepository {
 
-    fun getAllBooks() = listOf(
+    @ConfigProperty(name = "book.maxsize")
+    private lateinit var maxSize: String
+
+    val myBooks = mutableListOf(
         Book(
             id = 1,
             title = "The Hobbit",
@@ -34,8 +38,12 @@ class BookRepository {
             author = "<NAME>",
             genre = "Children's Books",
             yearOfPublication = 1988
-        ),
+        )
     )
 
-    fun getBook(id: Int) = getAllBooks().find { it.id == id }?.let { Optional.of(it) }
+    fun getAllBooks() = myBooks
+
+    fun getBook(id: Int) = getAllBooks().filter { it.id == id }.let { Optional.of(it) }
+
+    fun getMaxSize() = maxSize
 }
